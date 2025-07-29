@@ -126,9 +126,12 @@ app.use((err, req, res, next) => {
 
 // Server Listener
 const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || 'localhost'; // 'localhost' for local, '0.0.0.0' for Render
 
-server.listen(PORT, () => {
-  console.log(`🚀 BoxCric API Server running on http://localhost:${PORT}`);
+
+
+server.listen(PORT, HOST, () => {
+  console.log(`🚀 BoxCric API Server running on http://${HOST}:${PORT}`);
   console.log(`📡 Frontend expected at: http://localhost:8080`);
   console.log(`💳 Cashfree Config:`);
 
@@ -140,5 +143,6 @@ server.listen(PORT, () => {
     console.log(`   ❌ Cashfree credentials not set`);
   }
 });
+
 
 export default app;
