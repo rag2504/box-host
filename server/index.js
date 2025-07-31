@@ -130,13 +130,11 @@ app.use((err, req, res, next) => {
 
 // Server Listener
 const PORT = process.env.PORT || 3001;
-const HOST = process.env.HOST || 'localhost'; // 'localhost' for local, '0.0.0.0' for Render
-
-
+const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost'; // Use 0.0.0.0 for production to accept connections from any IP
 
 server.listen(PORT, HOST, () => {
   console.log(`🚀 BoxCric API Server running on http://${HOST}:${PORT}`);
-  console.log(`📡 Frontend expected at: http://localhost:8080`);
+  console.log(`📡 Frontend expected at: ${process.env.FRONTEND_URL || 'http://localhost:8080'}`);
   console.log(`💳 Cashfree Config:`);
 
   if (CASHFREE_APP_ID && CASHFREE_SECRET_KEY) {

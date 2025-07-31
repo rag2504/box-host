@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: boxcric-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        value: https://boxcric.netlify.app
+      - key: MONGODB_URI
+        fromDatabase:
+          name: boxcric-db
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CASHFREE_APP_ID
+        sync: false
+      - key: CASHFREE_SECRET_KEY
+        sync: false
+      - key: CASHFREE_API_URL
+        value: https://api.cashfree.com/pg
+
+databases:
+  - name: boxcric-db
+    databaseName: boxcricket
+    plan: free
