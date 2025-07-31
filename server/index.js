@@ -23,7 +23,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === 'production' 
-      ? [process.env.FRONTEND_URL, '*'] // In production, accept the deployed frontend URL and any origin as fallback
+      ? [process.env.FRONTEND_URL, 'https://boxcric.netlify.app', '*'] // In production, accept the deployed frontend URL and any origin as fallback
       : [
           "http://localhost:5173",
           "http://localhost:8080",
@@ -38,7 +38,7 @@ const io = new Server(server, {
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL, '*'] // In production, accept the deployed frontend URL and any origin as fallback
+    ? [process.env.FRONTEND_URL, 'https://boxcric.netlify.app', '*'] // In production, accept the deployed frontend URL and any origin as fallback
     : [
         "http://localhost:5173",
         "http://localhost:8080",
@@ -100,33 +100,26 @@ app.use("/api/users", userRoutes);
 app.use("/api/payments", paymentsRoutes);
 app.use("/api/admin/locations", adminLocationsRouter);
 
-// Health Check
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "OK",
-    message: "BoxCric API is running successfully!",
-    mongoConnected: isMongoConnected,
-    timestamp: new Date().toISOString(),
-  });
-});
+// Import health check middleware
+import { healthCheck } from "./lib/healthCheck.js";
 
-// 404 Handler
-app.use("*", (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "API endpoint not found",
-  });
-});
+// Health Check endpoint
+app.get("/api/health", healthCheck);
 
-// Error Handler
-app.use((err, req, res, next) => {
-  console.error("🚨 Error:", err);
-  res.status(500).json({
-    success: false,
-    message: "Internal server error",
-    error: process.env.NODE_ENV === "development" ? err.message : undefined,
-  });
-});
+// Import error handling middleware
+import { errorConverter, errorHandler, notFound, setupErrorHandlers } from "./lib/errorHandler.js";
+
+// Setup global error handlers for uncaught exceptions
+setupErrorHandlers();
+
+// 404 Handler - Must be after all routes
+app.use("*", notFound);
+
+// Error converter - Convert regular errors to ApiError format
+app.use(errorConverter);
+
+// Error Handler - Final middleware for handling all errors
+app.use(errorHandler);
 
 // Server Listener
 const PORT = process.env.PORT || 3001;

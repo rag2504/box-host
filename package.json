@@ -14,7 +14,9 @@
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
-    "test:render": "node test-render-deployment.js"
+    "test:render": "node test-render-deployment.js",
+    "deploy": "node deploy-to-render.js",
+    "check:health": "node check-deployment-health.js"
   },
   "resolutions": {
     "@rollup/rollup-linux-x64-gnu": "^3.0.0"

@@ -28,6 +28,16 @@ services:
         sync: false
       - key: CASHFREE_API_URL
         value: https://api.cashfree.com/pg
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: EMAIL_FROM
+        value: BoxCric <noreply@boxcric.com>
 
 databases:
   - name: boxcric-db

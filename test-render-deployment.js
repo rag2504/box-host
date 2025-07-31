@@ -24,6 +24,11 @@ const env = {
   RENDER: 'true',
   PORT: '3001',
   FRONTEND_URL: 'https://boxcric.netlify.app',
+  EMAIL_HOST: 'smtp.gmail.com',
+  EMAIL_PORT: '587',
+  EMAIL_USER: process.env.EMAIL_USER || 'test@example.com',
+  EMAIL_PASS: process.env.EMAIL_PASS || 'password_placeholder',
+  EMAIL_FROM: 'BoxCric <noreply@boxcric.com>',
 };
 
 // Log the environment variables we're using
@@ -35,6 +40,10 @@ console.log(`FRONTEND_URL: ${env.FRONTEND_URL}`);
 console.log(`MONGODB_URI: ${env.MONGODB_URI ? '✅ Set' : '❌ Not set'}`);
 console.log(`JWT_SECRET: ${env.JWT_SECRET ? '✅ Set' : '❌ Not set'}`);
 console.log(`CASHFREE_APP_ID: ${env.CASHFREE_APP_ID ? '✅ Set' : '❌ Not set'}`);
+console.log(`EMAIL_HOST: ${env.EMAIL_HOST ? '✅ Set' : '❌ Not set'}`);
+console.log(`EMAIL_PORT: ${env.EMAIL_PORT ? '✅ Set' : '❌ Not set'}`);
+console.log(`EMAIL_USER: ${env.EMAIL_USER ? '✅ Set' : '❌ Not set'}`);
+console.log(`EMAIL_PASS: ${env.EMAIL_PASS ? '✅ Set' : '❌ Not set (required for email functionality)'}`);
 console.log('\n');
 
 // Start the server with the Render environment

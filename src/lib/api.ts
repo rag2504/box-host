@@ -3,7 +3,7 @@ import { isMongoObjectId } from "./utils";
 
 // Use environment variables or adapt to deployment environment
 const API_BASE_URL = import.meta.env.VITE_API_URL || 
-  (window.location.hostname === "localhost" ? "http://localhost:3001/api" : "/api");
+  (window.location.hostname === "localhost" ? "http://localhost:3001/api" : "https://boxcric-api.onrender.com/api");
 
 // Create axios instance
 const api = axios.create({
