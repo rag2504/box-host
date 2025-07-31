@@ -1,7 +1,9 @@
 import axios from "axios";
 import { isMongoObjectId } from "./utils";
 
-const API_BASE_URL = "http://localhost:3001/api";
+// Use environment variables or adapt to deployment environment
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (window.location.hostname === "localhost" ? "http://localhost:3001/api" : "/api");
 
 // Create axios instance
 const api = axios.create({

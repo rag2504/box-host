@@ -22,12 +22,14 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:8080",
-      "http://localhost:3000",
-      "http://localhost:4000"
-    ],
+    origin: process.env.NODE_ENV === 'production' 
+      ? [process.env.FRONTEND_URL, '*'] // In production, accept the deployed frontend URL and any origin as fallback
+      : [
+          "http://localhost:5173",
+          "http://localhost:8080",
+          "http://localhost:3000",
+          "http://localhost:4000"
+        ],
     methods: ["GET", "POST"],
     credentials: true
   },
@@ -35,12 +37,14 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "http://localhost:4000"
-  ],
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL, '*'] // In production, accept the deployed frontend URL and any origin as fallback
+    : [
+        "http://localhost:5173",
+        "http://localhost:8080",
+        "http://localhost:3000",
+        "http://localhost:4000"
+      ],
   credentials: true,
 }));
 app.use(express.json());
