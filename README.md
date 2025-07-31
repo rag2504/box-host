@@ -13,7 +13,7 @@ A full-stack application for booking box cricket grounds, managing bookings, and
 
 ## Deployment Guide
 
-This application is set up for deployment on Render (backend) and Netlify (frontend).
+This application is set up for deployment on Render (backend) and Netlify (frontend). The backend and frontend must be deployed separately.
 
 ### Backend Deployment (Render)
 
@@ -22,7 +22,7 @@ This application is set up for deployment on Render (backend) and Netlify (front
 3. Configure the following settings:
    - **Environment**: Node
    - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
+   - **Start Command**: `npm start` (IMPORTANT: Make sure it's `npm start`, not `npm run dev`)
    - **Health Check Path**: `/api/health`
 
 4. Set up the following environment variables in Render:
@@ -44,6 +44,15 @@ This application is set up for deployment on Render (backend) and Netlify (front
 
 5. Deploy the service
 
+### Troubleshooting Render Deployment
+
+If your Render deployment is running in development mode instead of production mode, you can fix it by:
+
+1. Run the fix script: `node fix-render-start-command.js`
+2. Commit and push the changes to GitHub
+3. Manually trigger a new deployment in the Render dashboard
+4. Check the logs to ensure it's running in production mode
+
 ### Frontend Deployment (Netlify)
 
 1. Create a new site on Netlify
@@ -56,6 +65,26 @@ This application is set up for deployment on Render (backend) and Netlify (front
    - `VITE_API_URL`: https://boxcric-api.onrender.com/api
 
 5. Deploy the site
+
+### Troubleshooting Netlify Deployment
+
+If your Netlify deployment is not connecting to the backend correctly, you can fix it by:
+
+1. Make sure your backend is deployed and running correctly on Render
+2. Run the fix script: `node deploy-to-netlify.js`
+3. This script will:
+   - Update your `.env.production` file with the correct API URL
+   - Verify your `netlify.toml` configuration
+   - Build the frontend
+   - Provide instructions for deploying to Netlify
+4. After deployment, check the browser console for any API connection errors
+
+### Important Notes
+
+- The backend and frontend must be deployed separately
+- The backend must be deployed first, as the frontend needs the backend URL
+- Make sure the backend is running in production mode on Render
+- The frontend expects the backend API at `https://boxcric-api.onrender.com/api`
 
 ## Local Development
 
