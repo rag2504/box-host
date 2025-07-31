@@ -131,7 +131,8 @@ app.use((err, req, res, next) => {
 // Server Listener
 const PORT = process.env.PORT || 3001;
 // Always use 0.0.0.0 on Render or in production to accept connections from any IP
-const HOST = process.env.RENDER ? '0.0.0.0' : (process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost');
+// Force 0.0.0.0 for all deployments to ensure proper binding
+const HOST = '0.0.0.0';
 
 // Debug environment variables
 console.log('Environment Variables:');
@@ -139,6 +140,10 @@ console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`RENDER: ${process.env.RENDER ? 'true' : 'undefined'}`);
 console.log(`HOST: ${HOST}`);
 console.log(`PORT: ${PORT}`);
+
+// Additional debug info
+console.log('Server binding to:', `${HOST}:${PORT}`);
+console.log('Running in environment:', process.env.NODE_ENV || 'development');
 
 server.listen(PORT, HOST, () => {
   console.log(`🚀 BoxCric API Server running on http://${HOST}:${PORT}`);
