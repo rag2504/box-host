@@ -91,14 +91,14 @@ if (!netlifyToml.includes('command = \'npm run build\'')) {
 }
 
 // Check if publish directory is set correctly
-if (!netlifyToml.includes('publish = \'dist\'')) {
+if (!netlifyToml.includes('publish = \'src\'')) {
   console.error('❌ publish directory in netlify.toml is not set correctly!');
   console.log('🔧 Fixing netlify.toml...');
   
   // Update netlify.toml
   const updatedNetlifyToml = netlifyToml.replace(
     /publish = .*$/m,
-    "publish = 'dist'"
+    "publish = 'src'"
   );
   
   fs.writeFileSync('./netlify.toml', updatedNetlifyToml, 'utf8');
@@ -184,7 +184,7 @@ async function deploy() {
     console.log('   b. Choose "GitHub" and select your repository');
     console.log('   c. Configure the build settings:');
     console.log('      - Build command: npm run build');
-    console.log('      - Publish directory: dist');
+    console.log('      - Publish directory: src');
     console.log('   d. Click "Deploy site"');
     console.log('\n4. After deployment, check your Netlify site: https://boxcric.netlify.app');
 
