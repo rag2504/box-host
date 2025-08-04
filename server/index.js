@@ -4,6 +4,12 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Routes
 import testRoutes from "./routes/test.js";
@@ -50,6 +56,21 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from the React app build
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the React build
+  app.use(express.static(path.join(__dirname, '../dist')));
+  
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res, next) => {
+    // Skip API routes
+    if (req.path.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+}
+
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://rag123456:rag123456@cluster0.qipvo.mongodb.net/boxcricket?retryWrites=true&w=majority';
 let isMongoConnected = false;
@@ -89,7 +110,7 @@ io.on("connection", (socket) => {
 // Attach IO to app
 app.set("io", io);
 
-// Routes
+// API Routes
 app.use("/api/test", testRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/grounds", groundRoutes);

@@ -1,27 +1,17 @@
 services:
   - type: web
-    name: boxcric-api
+    name: box-host-1
     env: node
-    buildCommand: npm install
-    startCommand: npm start
-    healthCheckPath: /api/health
+    plan: free
+    buildCommand: npm run build:render
+    startCommand: npm run start:render
     envVars:
       - key: NODE_ENV
         value: production
       - key: RENDER
         value: true
-      - key: PORT
-        value: 3001
-      - key: FRONTEND_URL
-        value: https://boxcric.netlify.app
       - key: MONGODB_URI
-        fromDatabase:
-          name: boxcric-db
-          property: connectionString
-      - key: JWT_SECRET
         sync: false
-      - key: JWT_EXPIRES_IN
-        value: 7d
       - key: CASHFREE_APP_ID
         sync: false
       - key: CASHFREE_SECRET_KEY
@@ -36,8 +26,10 @@ services:
         sync: false
       - key: EMAIL_PASS
         sync: false
-      - key: EMAIL_FROM
-        value: BoxCric <noreply@boxcric.com>
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        value: https://boxcric.netlify.app
 
 databases:
   - name: boxcric-db
