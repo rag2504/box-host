@@ -12,6 +12,8 @@
     "build": "tsc && vite build",
     "build:render": "npm run build && npm run build:server",
     "build:server": "echo 'Server files are ready'",
+    "build:netlify": "npm run build && npm run copy-public",
+    "copy-public": "cp -r public/* dist/ 2>/dev/null || echo 'No public files to copy'",
     "start": "node server/index.js",
     "start:render": "NODE_ENV=production node server/index.js",
     "test": "vitest --run",
