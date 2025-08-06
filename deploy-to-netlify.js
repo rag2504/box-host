@@ -88,6 +88,24 @@ for (const file of requiredFiles) {
   }
 }
 
+// Fix the jsxDEV error by modifying index.html
+console.log('📝 Adding jsxDEV fix to index.html...');
+const indexHtmlPath = path.join(distPath, 'index.html');
+let indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
+
+// Check if the fix is already applied
+if (!indexHtml.includes('window.jsxDEV')) {
+  // Add the jsxDEV fix script before the module script
+  indexHtml = indexHtml.replace(
+    '<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>',
+    '<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>\n    <!-- Fix for jsxDEV not a function error -->\n    <script>\n      window.jsxDEV = function() { return null; };\n    </script>'
+  );
+  fs.writeFileSync(indexHtmlPath, indexHtml);
+  console.log('✅ Added jsxDEV fix to index.html');
+} else {
+  console.log('✅ jsxDEV fix already present in index.html');
+}
+
 // Check assets folder
 const assetsPath = path.join(distPath, 'assets');
 if (fs.existsSync(assetsPath)) {
