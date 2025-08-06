@@ -182,9 +182,15 @@ const Index = () => {
     const testAPI = async () => {
       try {
         console.log("🧪 Testing API connection...");
-        const response = await fetch(`${API_BASE_URL}/health`);
-        const data = await response.json();
-        console.log("✅ API Test Result:", data);
+        // Try health endpoint first
+        const healthResponse = await fetch(`${API_BASE_URL}/health`);
+        const healthData = await healthResponse.json();
+        console.log("✅ Health API Test Result:", healthData);
+        
+        // Also try test endpoint
+        const testResponse = await fetch(`${API_BASE_URL}/test`);
+        const testData = await testResponse.json();
+        console.log("✅ Test API Result:", testData);
       } catch (error) {
         console.error("❌ API Test Failed:", error);
       }
