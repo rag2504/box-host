@@ -182,7 +182,7 @@ const Index = () => {
     const testAPI = async () => {
       try {
         console.log("🧪 Testing API connection...");
-        const response = await fetch(`${API_BASE_URL}/test`);
+        const response = await fetch(`${API_BASE_URL}/health`);
         const data = await response.json();
         console.log("✅ API Test Result:", data);
       } catch (error) {
