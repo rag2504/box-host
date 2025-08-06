@@ -2,7 +2,7 @@ import axios from "axios";
 import { isMongoObjectId } from "./utils";
 
 // Use environment variables or adapt to deployment environment
-const API_BASE_URL = import.meta.env.VITE_API_URL || 
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 
   (window.location.hostname === "localhost" ? "http://localhost:3001/api" : "https://box-host-1.onrender.com/api");
 
 // Create axios instance

@@ -120,23 +120,33 @@ if (fs.existsSync(assetsPath)) {
 
 // Step 6: Create _redirects file for SPA routing
 console.log('\n6. Creating _redirects file for SPA routing...');
-const redirectsContent = `/api/*  https://box-host-1.onrender.com/api/:splat  200!\n/*    /index.html   200`;
+const redirectsContent = `# Netlify redirects file
+/api/*  https://box-host-1.onrender.com/api/:splat  200
+/*      /index.html                                 200`;
 fs.writeFileSync(path.join(distPath, '_redirects'), redirectsContent);
 console.log('✅ _redirects file created');
 
-// Step 7: Create _headers file for security headers
+// Step 7: Create _headers file
 console.log('\n7. Creating _headers file...');
-const headersContent = `/*
+const headersContent = `# Netlify headers file
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/*
   X-Frame-Options: DENY
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable`;
+  Referrer-Policy: strict-origin-when-cross-origin`;
 fs.writeFileSync(path.join(distPath, '_headers'), headersContent);
 console.log('✅ _headers file created');
 
+// Step 8: Copy environment variables file
+console.log('\n8. Copying environment variables file...');
+if (fs.existsSync('.env.netlify')) {
+  fs.copyFileSync('.env.netlify', path.join(distPath, '.env'));
+  console.log('✅ Environment variables file copied');
+} else {
+  console.log('⚠️ No .env.netlify file found');
+}
 console.log('\n🎉 Netlify deployment preparation completed!');
 console.log('\n📋 Next steps:');
 console.log('1. Push your code to GitHub');
